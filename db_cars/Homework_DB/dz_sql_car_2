@@ -1,0 +1,9 @@
+--2. Вывести по порядку убывания выручки всех городов за указанный период времени
+
+SELECT SUM(w.price) sum_city, car.city FROM car_dealership_orders as c 
+JOIN car_dealership_people as car ON customer_id = car.id
+JOIN car_dealership_works as w ON work_id = w.id
+/*WHERE c.data_order LIKE '%-16-%'*/
+WHERE c.data_order LIKE '%-17-%'
+GROUP BY car.city
+ORDER BY -sum_city

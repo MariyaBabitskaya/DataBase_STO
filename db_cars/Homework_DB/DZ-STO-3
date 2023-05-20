@@ -1,0 +1,30 @@
+---------------------------------------------------------------------------3. Найти все заказы, сумма которых выше на 20% BYN среднего заказа по данному городу
+
+--это у нас среднее по городам
+SELECT ROUND((AVG(work1.price) + AVG(work1.price)*0.2), 1) avg_price, 
+             peo1.city     cust_city
+             FROM car_dealership_orders as orders1
+                         JOIN car_dealership_orders_works as ow1 ON orders1.id = ow1.orders_id
+                         JOIN car_dealership_customers as cust1 ON orders1.cust_id = cust1.id
+                         JOIN car_dealership_people as peo1 ON cust1.customer_id = peo1.id
+                         JOIN car_dealership_works as work1 ON ow1.works_id = work1.id
+             GROUP BY cust_city;
+
+---почти готовый запрос
+
+SELECT first_name, ser_name, type_of_work, all_avg_price.avg_price
+FROM car_dealership_orders orders2
+JOIN car_dealership_orders_works as ow2 ON orders2.id = ow2.orders_id
+JOIN car_dealership_customers as cust2 ON orders2.cust_id = cust2.id
+JOIN car_dealership_people as peo2 ON cust2.customer_id = peo2.id
+JOIN car_dealership_works as work2 ON ow2.works_id = work2.id
+INNER JOIN (SELECT ROUND((AVG(work1.price) + AVG(work1.price)*0.2), 1) avg_price, 
+             peo1.city     cust_city
+             FROM car_dealership_orders as orders1
+                         JOIN car_dealership_orders_works as ow1 ON orders1.id = ow1.orders_id
+                         JOIN car_dealership_customers as cust1 ON orders1.cust_id = cust1.id
+                         JOIN car_dealership_people as peo1 ON cust1.customer_id = peo1.id
+                         JOIN car_dealership_works as work1 ON ow1.works_id = work1.id
+             GROUP BY cust_city) all_avg_price
+ON all_avg_price.cust_city = peo2.city
+/*WHERE w2.price > all_avg_price.avg_price;*/

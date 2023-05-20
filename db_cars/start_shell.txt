@@ -1,0 +1,47 @@
+python manage.py shell
+
+from car_dealership.models import *
+
+from django.db import connection
+print(connection.queries)
+это выводит все созданные запросы в виде SQL
+
+print(People.objects.filter(city='Минск').query)
+Пример вывода на языке SQL конкретного запроса
+print(.query)
+
+from django.db.models import Avg
+это уже идет импорт агрегатной функции
+Order.objects.aggregate
+
+Orders.objects.filter(works__price=30)
+print(Orders.objects.filter(works__price=30).query)
+
+Orders.objects.aggregate(Avg('works__price'))
+
+Works.objects.aggregate(Avg('price'))
+print(Works.objects.aggregate(Avg('price')).query)
+
+from django.db.models import Count
+c = People.objects.annotate(Count('city'))
+
+from django.db.models import Sum
+Orders.objects.annotate(total_price=Sum('works__price'))
+
+Orders.objects.aggregate(Sum('works__price'))
+
+Orders.objects.filter(cust__city).aggregate(Sum('works__price'))
+
+Orders.objects.filter(cust__customer__first_name='Сергей')
+
+
+!!!!!!!!!!!!!!!!!!
+python manage.py shell
+
+from car_dealership.models import *
+
+from django.db.models import Sum
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Orders.objects.order_by(cust__customer__city).aggregate(Sum('works__price'))
+Orders.objects.filter(cust__customer__city='Минск').filter(cust__data_order='2023-05-03').aggregate(Sum('works__price'))
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

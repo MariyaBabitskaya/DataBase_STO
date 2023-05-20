@@ -1,0 +1,37 @@
+--/*SELECT car.first_name, w.type_of_work */
+--SELECT car.city FROM car_dealership_orders as c2
+--JOIN (SELECT AVG(w.price) avg_price FROM car_dealership_orders as c 
+--JOIN car_dealership_people as car ON customer_id = car.id
+--JOIN car_dealership_works as w ON work_id = w.id
+--GROUP BY car.city) as avg_price
+--/*WHERE w2.price > avg_price.avg_price + avg_price.avg_price*0.2*/
+--
+--/*SELECT AVG(w.price) avg_price FROM car_dealership_orders as c 
+--JOIN car_dealership_people as car ON customer_id = car.id
+--JOIN car_dealership_works as w ON work_id = w.id
+--GROUP BY car.city*/
+-- -----------------------------------------------------
+/*SELECT * 
+FROM (SELECT AVG(w.price) avg_price, 
+             cp.city     cust_city
+             FROM car_dealership_orders as ord
+                         JOIN car_dealership_people as cp ON customer_id = cp.id
+                         JOIN car_dealership_works as w ON work_id = w.id
+             GROUP BY cp.city) all_avg_price;*/
+--это среднее по городу
+---------------------------------------------------------------------------3. Найти все заказы, сумма которых выше на 20% BYN среднего заказа по данному городу
+SELECT first_name, ser_name, type_of_work, price, all_avg_price.avg_price
+FROM car_dealership_orders ord2
+INNER JOIN car_dealership_people as cp2 ON customer_id = cp2.id
+INNER JOIN car_dealership_works as w2 ON work_id = w2.id
+INNER JOIN (SELECT AVG(w.price) + AVG(w.price)*0.2 avg_price, 
+             cp.city     cust_city
+             FROM car_dealership_orders as ord
+                         JOIN car_dealership_people as cp ON customer_id = cp.id
+                         JOIN car_dealership_works as w ON work_id = w.id
+             GROUP BY cust_city) all_avg_price
+ON all_avg_price.cust_city = cp2.city
+WHERE w2.price > all_avg_price.avg_price
+
+
+

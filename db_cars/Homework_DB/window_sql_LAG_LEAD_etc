@@ -1,0 +1,29 @@
+/*SELECT first_name, ser_name, type_of_work, price,
+FIRST_VALUE(price) over (partition by first_name ORDER BY price)
+FROM car_dealership_orders ord
+INNER JOIN car_dealership_people as cp ON customer_id = cp.id
+INNER JOIN car_dealership_works as w ON work_id = w.id
+ORDER BY first_name;*/
+
+/*SELECT first_name, ser_name, type_of_work, price,
+LAST_VALUE(price, 2) over (partition by first_name ORDER BY price 
+RANGE BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING)
+FROM car_dealership_orders ord
+INNER JOIN car_dealership_people as cp ON customer_id = cp.id
+INNER JOIN car_dealership_works as w ON work_id = w.id
+ORDER BY first_name;*/
+
+/*SELECT first_name, ser_name, type_of_work, price,
+FIRST_VALUE(price) over (partition by first_name ORDER BY price RANGE BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING)
+FROM car_dealership_orders ord
+INNER JOIN car_dealership_people as cp ON customer_id = cp.id
+INNER JOIN car_dealership_works as w ON work_id = w.id
+ORDER BY first_name*/
+
+SELECT first_name, ser_name, type_of_work, price,
+NTH_VALUE(price, 2) over (partition by first_name ORDER BY price 
+RANGE BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING)
+FROM car_dealership_orders ord
+INNER JOIN car_dealership_people as cp ON customer_id = cp.id
+INNER JOIN car_dealership_works as w ON work_id = w.id
+ORDER BY first_name;

@@ -1,0 +1,17 @@
+--1. Найти все клиентов из указанного города с суммой чека меньше указанного на 1000
+
+SELECT first_name, ser_name, SUM(work.price) sum FROM car_dealership_orders as orders
+JOIN car_dealership_orders_works as ow ON orders.id = ow.orders_id
+JOIN car_dealership_customers as cust ON orders.cust_id = cust.id
+JOIN car_dealership_people as peo ON cust.customer_id = peo.id
+JOIN car_dealership_works as work ON ow.works_id = work.id
+WHERE peo.city LIKE 'Гродно' /*AND sum < 100*/
+GROUP BY orders.id;
+/*WHERE peo.city = 'Минск' AND sum_price <= 2000 - 1000*/
+
+SELECT first_name, ser_name, SUM(work.price) OVER (ORDER BY orders.id) sum FROM car_dealership_orders as orders
+JOIN car_dealership_orders_works as ow ON orders.id = ow.orders_id
+JOIN car_dealership_customers as cust ON orders.cust_id = cust.id
+JOIN car_dealership_people as peo ON cust.customer_id = peo.id
+JOIN car_dealership_works as work ON ow.works_id = work.id
+WHERE peo.city LIKE 'Гродно' AND sum < 100

@@ -1,0 +1,7 @@
+--1. Найти все клиентов из указанного города с суммой чека меньше указанного на 1000
+
+SELECT first_name, ser_name FROM car_dealership_orders as c 
+JOIN car_dealership_people as car ON customer_id = car.id
+JOIN car_dealership_works as w ON work_id = w.id
+WHERE car.city = 'Минск'
+AND w.price <= 30 - 10

@@ -1,0 +1,8 @@
+SELECT first_name, ser_name, type_of_work, price,
+AVG(price) over (partition by first_name)
+FROM car_dealership_orders ord
+INNER JOIN car_dealership_people as cp ON customer_id = cp.id
+INNER JOIN car_dealership_works as w ON work_id = w.id
+ORDER BY first_name
+
+
